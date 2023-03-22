@@ -1,0 +1,543 @@
+--Cyclistic bike share data analysis--
+
+SELECT * FROM public."202101_tripdata" LIMIT 10
+
+--Union monthly data from Jan 2021 to Dec 2021-- 
+
+SELECT * FROM public."202101_tripdata"
+UNION
+(SELECT * FROM public."202102_tripdata")
+UNION
+(SELECT * FROM public."202103_tripdata")
+UNION
+(SELECT * FROM public."202104_tripdata")
+UNION
+(SELECT * FROM public."202105_tripdata")
+UNION
+(SELECT * FROM public."202106_tripdata")
+UNION
+(SELECT * FROM public."202107_tripdata")
+UNION
+(SELECT * FROM public."202108_tripdata")
+UNION
+(SELECT * FROM public."202109_tripdata")
+UNION
+(SELECT * FROM public."202110_tripdata")
+UNION
+(SELECT * FROM public."202111_tripdata")
+UNION
+(SELECT * FROM public."202112_tripdata")
+
+--What number of customers are members vs casual?--
+
+SELECT  member_casual, count(ride_id) as num_of_subs
+from
+(
+SELECT * FROM public."202101_tripdata"
+UNION
+(SELECT * FROM public."202102_tripdata")
+UNION
+(SELECT * FROM public."202103_tripdata")
+UNION
+(SELECT * FROM public."202104_tripdata")
+UNION
+(SELECT * FROM public."202105_tripdata")
+UNION
+(SELECT * FROM public."202106_tripdata")
+UNION
+(SELECT * FROM public."202107_tripdata")
+UNION
+(SELECT * FROM public."202108_tripdata")
+UNION
+(SELECT * FROM public."202109_tripdata")
+UNION
+(SELECT * FROM public."202110_tripdata")
+UNION
+(SELECT * FROM public."202111_tripdata")
+UNION
+(SELECT * FROM public."202112_tripdata")
+) as Tripdata_2021
+group by member_casual
+
+--Average ride lenght of member vs casual riders--
+
+select member_casual, avg(ride_length)
+from 
+(
+SELECT * FROM public."202101_tripdata"
+UNION
+(SELECT * FROM public."202102_tripdata")
+UNION
+(SELECT * FROM public."202103_tripdata")
+UNION
+(SELECT * FROM public."202104_tripdata")
+UNION
+(SELECT * FROM public."202105_tripdata")
+UNION
+(SELECT * FROM public."202106_tripdata")
+UNION
+(SELECT * FROM public."202107_tripdata")
+UNION
+(SELECT * FROM public."202108_tripdata")
+UNION
+(SELECT * FROM public."202109_tripdata")
+UNION
+(SELECT * FROM public."202110_tripdata")
+UNION
+(SELECT * FROM public."202111_tripdata")
+UNION
+(SELECT * FROM public."202112_tripdata")
+) as Tripdata_2021
+group by member_casual
+
+--member number of ride by day of the week--
+SELECT day_of_week, count(ride_id) AS num_of_rides
+FROM (
+SELECT * FROM public."202101_tripdata"
+UNION
+(SELECT * FROM public."202102_tripdata")
+UNION
+(SELECT * FROM public."202103_tripdata")
+UNION
+(SELECT * FROM public."202104_tripdata")
+UNION
+(SELECT * FROM public."202105_tripdata")
+UNION
+(SELECT * FROM public."202106_tripdata")
+UNION
+(SELECT * FROM public."202107_tripdata")
+UNION
+(SELECT * FROM public."202108_tripdata")
+UNION
+(SELECT * FROM public."202109_tripdata")
+UNION
+(SELECT * FROM public."202110_tripdata")
+UNION
+(SELECT * FROM public."202111_tripdata")
+UNION
+(SELECT * FROM public."202112_tripdata")
+) as Tripdata_2021
+WHERE member_casual = 'member'
+group by day_of_week
+ORDER BY day_of_week
+
+--casual number of ride by day of the week--
+SELECT day_of_week, count(ride_id) AS num_of_rides
+FROM (
+SELECT * FROM public."202101_tripdata"
+UNION
+(SELECT * FROM public."202102_tripdata")
+UNION
+(SELECT * FROM public."202103_tripdata")
+UNION
+(SELECT * FROM public."202104_tripdata")
+UNION
+(SELECT * FROM public."202105_tripdata")
+UNION
+(SELECT * FROM public."202106_tripdata")
+UNION
+(SELECT * FROM public."202107_tripdata")
+UNION
+(SELECT * FROM public."202108_tripdata")
+UNION
+(SELECT * FROM public."202109_tripdata")
+UNION
+(SELECT * FROM public."202110_tripdata")
+UNION
+(SELECT * FROM public."202111_tripdata")
+UNION
+(SELECT * FROM public."202112_tripdata")
+) as Tripdata_2021
+WHERE member_casual = 'casual'
+group by day_of_week
+ORDER BY day_of_week
+
+--Average ride lenght of member by day of week--
+
+SELECT day_of_week, avg(ride_length) AS avg_ride_length
+FROM (
+SELECT * FROM public."202101_tripdata"
+UNION
+(SELECT * FROM public."202102_tripdata")
+UNION
+(SELECT * FROM public."202103_tripdata")
+UNION
+(SELECT * FROM public."202104_tripdata")
+UNION
+(SELECT * FROM public."202105_tripdata")
+UNION
+(SELECT * FROM public."202106_tripdata")
+UNION
+(SELECT * FROM public."202107_tripdata")
+UNION
+(SELECT * FROM public."202108_tripdata")
+UNION
+(SELECT * FROM public."202109_tripdata")
+UNION
+(SELECT * FROM public."202110_tripdata")
+UNION
+(SELECT * FROM public."202111_tripdata")
+UNION
+(SELECT * FROM public."202112_tripdata")
+) as Tripdata_2021
+WHERE member_casual = 'member'
+group by day_of_week
+ORDER BY avg_ride_length
+
+--Average ride lenght of casual by day of week--
+
+SELECT day_of_week, avg(ride_length) AS avg_ride_length
+FROM (
+SELECT * FROM public."202101_tripdata"
+UNION
+(SELECT * FROM public."202102_tripdata")
+UNION
+(SELECT * FROM public."202103_tripdata")
+UNION
+(SELECT * FROM public."202104_tripdata")
+UNION
+(SELECT * FROM public."202105_tripdata")
+UNION
+(SELECT * FROM public."202106_tripdata")
+UNION
+(SELECT * FROM public."202107_tripdata")
+UNION
+(SELECT * FROM public."202108_tripdata")
+UNION
+(SELECT * FROM public."202109_tripdata")
+UNION
+(SELECT * FROM public."202110_tripdata")
+UNION
+(SELECT * FROM public."202111_tripdata")
+UNION
+(SELECT * FROM public."202112_tripdata")
+) as Tripdata_2021
+WHERE member_casual = 'casual'
+group by day_of_week
+ORDER BY avg_ride_length
+
+--Total number of rides by month of the year--
+
+SELECT  EXTRACT(MONTH from started_at) AS "Month_of_year", count(ride_id) AS num_of_ride
+FROM (
+SELECT * FROM public."202101_tripdata"
+UNION
+(SELECT * FROM public."202102_tripdata")
+UNION
+(SELECT * FROM public."202103_tripdata")
+UNION
+(SELECT * FROM public."202104_tripdata")
+UNION
+(SELECT * FROM public."202105_tripdata")
+UNION
+(SELECT * FROM public."202106_tripdata")
+UNION
+(SELECT * FROM public."202107_tripdata")
+UNION
+(SELECT * FROM public."202108_tripdata")
+UNION
+(SELECT * FROM public."202109_tripdata")
+UNION
+(SELECT * FROM public."202110_tripdata")
+UNION
+(SELECT * FROM public."202111_tripdata")
+UNION
+(SELECT * FROM public."202112_tripdata")
+) as Tripdata_2021
+GROUP BY "Month_of_year"
+ORDER BY "Month_of_year"
+
+--Total number of monthly rides by members--
+
+SELECT  EXTRACT(MONTH from started_at) AS "Month_of_year", count(ride_id) AS num_of_ride
+FROM (
+SELECT * FROM public."202101_tripdata"
+UNION
+(SELECT * FROM public."202102_tripdata")
+UNION
+(SELECT * FROM public."202103_tripdata")
+UNION
+(SELECT * FROM public."202104_tripdata")
+UNION
+(SELECT * FROM public."202105_tripdata")
+UNION
+(SELECT * FROM public."202106_tripdata")
+UNION
+(SELECT * FROM public."202107_tripdata")
+UNION
+(SELECT * FROM public."202108_tripdata")
+UNION
+(SELECT * FROM public."202109_tripdata")
+UNION
+(SELECT * FROM public."202110_tripdata")
+UNION
+(SELECT * FROM public."202111_tripdata")
+UNION
+(SELECT * FROM public."202112_tripdata")
+) as Tripdata_2021
+WHERE member_casual = 'member'
+GROUP BY "Month_of_year"
+ORDER BY "Month_of_year"
+
+
+--Total number of monthly rides by casual--
+
+SELECT  EXTRACT(MONTH from started_at) AS "Month_of_year", count(ride_id) AS num_of_ride
+FROM (
+SELECT * FROM public."202101_tripdata"
+UNION
+(SELECT * FROM public."202102_tripdata")
+UNION
+(SELECT * FROM public."202103_tripdata")
+UNION
+(SELECT * FROM public."202104_tripdata")
+UNION
+(SELECT * FROM public."202105_tripdata")
+UNION
+(SELECT * FROM public."202106_tripdata")
+UNION
+(SELECT * FROM public."202107_tripdata")
+UNION
+(SELECT * FROM public."202108_tripdata")
+UNION
+(SELECT * FROM public."202109_tripdata")
+UNION
+(SELECT * FROM public."202110_tripdata")
+UNION
+(SELECT * FROM public."202111_tripdata")
+UNION
+(SELECT * FROM public."202112_tripdata")
+) as Tripdata_2021
+WHERE member_casual = 'casual'
+GROUP BY "Month_of_year"
+ORDER BY "Month_of_year"
+
+--Looking at number of different bike type rented by member and casual--
+
+SELECT  rideable_type, COUNT(member_casual) AS num_of_bikes
+FROM (
+SELECT * FROM public."202101_tripdata"
+UNION
+(SELECT * FROM public."202102_tripdata")
+UNION
+(SELECT * FROM public."202103_tripdata")
+UNION
+(SELECT * FROM public."202104_tripdata")
+UNION
+(SELECT * FROM public."202105_tripdata")
+UNION
+(SELECT * FROM public."202106_tripdata")
+UNION
+(SELECT * FROM public."202107_tripdata")
+UNION
+(SELECT * FROM public."202108_tripdata")
+UNION
+(SELECT * FROM public."202109_tripdata")
+UNION
+(SELECT * FROM public."202110_tripdata")
+UNION
+(SELECT * FROM public."202111_tripdata")
+UNION
+(SELECT * FROM public."202112_tripdata")
+) as Tripdata_2021
+--WHERE member_casual = 'casual'
+GROUP BY rideable_type
+
+--Looking at number of different bike type rented by member--
+
+SELECT  rideable_type, COUNT(member_casual) AS num_of_bikes
+FROM (
+SELECT * FROM public."202101_tripdata"
+UNION
+(SELECT * FROM public."202102_tripdata")
+UNION
+(SELECT * FROM public."202103_tripdata")
+UNION
+(SELECT * FROM public."202104_tripdata")
+UNION
+(SELECT * FROM public."202105_tripdata")
+UNION
+(SELECT * FROM public."202106_tripdata")
+UNION
+(SELECT * FROM public."202107_tripdata")
+UNION
+(SELECT * FROM public."202108_tripdata")
+UNION
+(SELECT * FROM public."202109_tripdata")
+UNION
+(SELECT * FROM public."202110_tripdata")
+UNION
+(SELECT * FROM public."202111_tripdata")
+UNION
+(SELECT * FROM public."202112_tripdata")
+) as Tripdata
+WHERE member_casual = 'member'
+GROUP BY 1
+
+
+--Looking at number of different bike type rented by casual--
+
+SELECT  rideable_type, COUNT(member_casual) AS num_of_bikes
+FROM (
+SELECT * FROM public."202101_tripdata"
+UNION
+(SELECT * FROM public."202102_tripdata")
+UNION
+(SELECT * FROM public."202103_tripdata")
+UNION
+(SELECT * FROM public."202104_tripdata")
+UNION
+(SELECT * FROM public."202105_tripdata")
+UNION
+(SELECT * FROM public."202106_tripdata")
+UNION
+(SELECT * FROM public."202107_tripdata")
+UNION
+(SELECT * FROM public."202108_tripdata")
+UNION
+(SELECT * FROM public."202109_tripdata")
+UNION
+(SELECT * FROM public."202110_tripdata")
+UNION
+(SELECT * FROM public."202111_tripdata")
+UNION
+(SELECT * FROM public."202112_tripdata")
+) as Tripdata
+WHERE member_casual = 'casual'
+GROUP BY 1
+
+--Start station used most by member--
+
+SELECT start_station_name, COUNT(start_station_id) AS start_station_total
+FROM (
+SELECT * FROM public."202101_tripdata"
+UNION
+(SELECT * FROM public."202102_tripdata")
+UNION
+(SELECT * FROM public."202103_tripdata")
+UNION
+(SELECT * FROM public."202104_tripdata")
+UNION
+(SELECT * FROM public."202105_tripdata")
+UNION
+(SELECT * FROM public."202106_tripdata")
+UNION
+(SELECT * FROM public."202107_tripdata")
+UNION
+(SELECT * FROM public."202108_tripdata")
+UNION
+(SELECT * FROM public."202109_tripdata")
+UNION
+(SELECT * FROM public."202110_tripdata")
+UNION
+(SELECT * FROM public."202111_tripdata")
+UNION
+(SELECT * FROM public."202112_tripdata")
+) as Tripdata
+WHERE member_casual = 'member'
+GROUP BY 1
+ORDER BY 2 DESC
+
+--Start station used most by casual--
+
+SELECT start_station_name, COUNT(start_station_id) AS start_station_total
+FROM (
+SELECT * FROM public."202101_tripdata"
+UNION
+(SELECT * FROM public."202102_tripdata")
+UNION
+(SELECT * FROM public."202103_tripdata")
+UNION
+(SELECT * FROM public."202104_tripdata")
+UNION
+(SELECT * FROM public."202105_tripdata")
+UNION
+(SELECT * FROM public."202106_tripdata")
+UNION
+(SELECT * FROM public."202107_tripdata")
+UNION
+(SELECT * FROM public."202108_tripdata")
+UNION
+(SELECT * FROM public."202109_tripdata")
+UNION
+(SELECT * FROM public."202110_tripdata")
+UNION
+(SELECT * FROM public."202111_tripdata")
+UNION
+(SELECT * FROM public."202112_tripdata")
+) as Tripdata
+WHERE member_casual = 'casual'
+GROUP BY 1
+ORDER BY 2 DESC
+
+--End station used most by member--
+
+SELECT end_station_name, COUNT(end_station_id) AS end_station_total
+FROM (
+SELECT * FROM public."202101_tripdata"
+UNION
+(SELECT * FROM public."202102_tripdata")
+UNION
+(SELECT * FROM public."202103_tripdata")
+UNION
+(SELECT * FROM public."202104_tripdata")
+UNION
+(SELECT * FROM public."202105_tripdata")
+UNION
+(SELECT * FROM public."202106_tripdata")
+UNION
+(SELECT * FROM public."202107_tripdata")
+UNION
+(SELECT * FROM public."202108_tripdata")
+UNION
+(SELECT * FROM public."202109_tripdata")
+UNION
+(SELECT * FROM public."202110_tripdata")
+UNION
+(SELECT * FROM public."202111_tripdata")
+UNION
+(SELECT * FROM public."202112_tripdata")
+) as Tripdata
+WHERE member_casual = 'member'
+GROUP BY 1
+ORDER BY 2 DESC
+
+--End station used most by casual--
+
+SELECT end_station_name, COUNT(end_station_id) AS end_station_total
+FROM (
+SELECT * FROM public."202101_tripdata"
+UNION
+(SELECT * FROM public."202102_tripdata")
+UNION
+(SELECT * FROM public."202103_tripdata")
+UNION
+(SELECT * FROM public."202104_tripdata")
+UNION
+(SELECT * FROM public."202105_tripdata")
+UNION
+(SELECT * FROM public."202106_tripdata")
+UNION
+(SELECT * FROM public."202107_tripdata")
+UNION
+(SELECT * FROM public."202108_tripdata")
+UNION
+(SELECT * FROM public."202109_tripdata")
+UNION
+(SELECT * FROM public."202110_tripdata")
+UNION
+(SELECT * FROM public."202111_tripdata")
+UNION
+(SELECT * FROM public."202112_tripdata")
+) as Tripdata
+WHERE member_casual = 'casual'
+GROUP BY 1
+ORDER BY 2 DESC
+
+
+
+
+
+
+
+
